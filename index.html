@@ -365,6 +365,15 @@
             to { transform: rotate(360deg); }
         }
 
+        /* Hidden iframe for form submission */
+        .hidden-frame {
+            display: none;
+            width: 0;
+            height: 0;
+            border: 0;
+            position: absolute;
+        }
+
         @media (max-width: 768px) {
             .container {
                 padding: 30px 16px;
@@ -404,22 +413,23 @@
             
             <div class="form-container" id="formContainer">
                 <h2 class="form-title">Submit Your Question</h2>
+                
                 <form id="supportForm">
                     <div class="form-group">
                         <label class="form-label" for="name">Name</label>
-                        <input type="text" class="form-control" id="name" placeholder="Enter your name" required>
+                        <input type="text" class="form-control" id="name" name="name" placeholder="Enter your name" required>
                         <div class="error-text" id="nameError">Please enter your name</div>
                     </div>
                     
                     <div class="form-group">
                         <label class="form-label" for="email">Email Address</label>
-                        <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
+                        <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>
                         <div class="error-text" id="emailError">Please enter a valid email address</div>
                     </div>
                     
                     <div class="form-group">
                         <label class="form-label" for="description">Problem Description</label>
-                        <textarea class="form-control" id="description" placeholder="Please describe your issue in detail" required></textarea>
+                        <textarea class="form-control" id="description" name="description" placeholder="Please describe your issue in detail" required></textarea>
                         <div class="error-text" id="descriptionError">Please describe your issue</div>
                     </div>
                     
@@ -496,7 +506,7 @@
 
     <script>
         // 替换为您的Google Apps Script Web App URL
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzcnEvKqW_q1cIWbHHhz_s6wWn23HWXhGS4xQNYH-X3K8zKMKCoubTConoQYZ69R5v8pg/exec';
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwUZus-HWQ5HYQrvgktkwRZdmA3ZQiRi0ax6lbA6CzX0d2nhTwOx1gyrptb-xB5YHrn/exec';
         
         // Show form when button clicked
         document.getElementById('helpButton').addEventListener('click', function() {
@@ -515,16 +525,87 @@
         });
         
         // Form submission
-        document.getElementById('supportForm').addEventListener('submit', async function(e) {
+        document.getElementById('supportForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
-            // Basic form validation
+            // Validate form
+            if (!validateForm()) {
+                return;
+            }
+            
+            // Show loading indicator
+            document.getElementById('loadingIndicator').style.display = 'block';
+            
+            // Get form data
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const description = document.getElementById('description').value.trim();
+            
+            // Create form data object
+            const formData = new FormData();
+            formData.append('name', name);
+            formData.append('email', email);
+            formData.append('description', description);
+            
+            // Use the traditional form submission method which is not affected by CORS
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = SCRIPT_URL;
+            form.style.display = 'none';
+            
+            // Add inputs to the form
+            const nameInput = document.createElement('input');
+            nameInput.name = 'name';
+            nameInput.value = name;
+            form.appendChild(nameInput);
+            
+            const emailInput = document.createElement('input');
+            emailInput.name = 'email';
+            emailInput.value = email;
+            form.appendChild(emailInput);
+            
+            const descriptionInput = document.createElement('input');
+            descriptionInput.name = 'description';
+            descriptionInput.value = description;
+            form.appendChild(descriptionInput);
+            
+            // Create a hidden iframe
+            const iframe = document.createElement('iframe');
+            iframe.name = 'hidden_iframe';
+            iframe.style.display = 'none';
+            document.body.appendChild(iframe);
+            
+            // Set form target to the iframe
+            form.target = 'hidden_iframe';
+            
+            // Add form to the document
+            document.body.appendChild(form);
+            
+            // Listen for iframe load
+            iframe.onload = function() {
+                // Hide loading indicator
+                document.getElementById('loadingIndicator').style.display = 'none';
+                // Show success message
+                document.getElementById('supportForm').style.display = 'none';
+                document.getElementById('successMessage').style.display = 'block';
+            };
+            
+            // Submit the form
+            form.submit();
+            
+            // Clean up
+            setTimeout(function() {
+                document.body.removeChild(form);
+            }, 1000);
+        });
+        
+        // Validate form
+        function validateForm() {
             let isValid = true;
             
             const name = document.getElementById('name');
             const email = document.getElementById('email');
             const description = document.getElementById('description');
-            const screenshot = document.getElementById('screenshot');
             
             // Name validation
             if (!name.value.trim()) {
@@ -551,66 +632,8 @@
                 document.getElementById('descriptionError').style.display = 'none';
             }
             
-            if (!isValid) {
-                return;
-            }
-            
-            // Show loading indicator
-            document.getElementById('loadingIndicator').style.display = 'block';
-            
-            try {
-                // Handle file upload if present
-                let fileUrl = "";
-                if (screenshot.files.length > 0) {
-                    // 注意：真实场景中，您需要先将文件上传到某处（如 Google Drive）
-                    // 这里我们只是模拟，实际项目需要使用文件上传服务
-                    // fileUrl = await uploadFile(screenshot.files[0]);
-                    
-                    // 简单示例中，我们直接使用一个占位符
-                    fileUrl = "Screenshot was uploaded but URL placeholder is used";
-                }
-                
-                // Prepare data for submission
-                const formData = {
-                    name: name.value.trim(),
-                    email: email.value.trim(),
-                    description: description.value.trim(),
-                    fileUrl: fileUrl
-                };
-                
-                // Submit data to Google Apps Script
-                const response = await fetch(SCRIPT_URL, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(formData)
-                });
-                
-                const result = await response.json();
-                
-                // Hide loading indicator
-                document.getElementById('loadingIndicator').style.display = 'none';
-                
-                if (result.result === 'success') {
-                    // Show success message
-                    document.getElementById('supportForm').style.display = 'none';
-                    document.getElementById('successMessage').style.display = 'block';
-                } else {
-                    // Show error message
-                    document.getElementById('errorDetails').textContent = result.message || 'An unknown error occurred.';
-                    document.getElementById('supportForm').style.display = 'none';
-                    document.getElementById('errorMessage').style.display = 'block';
-                }
-                
-            } catch (error) {
-                // Hide loading indicator and show error message
-                document.getElementById('loadingIndicator').style.display = 'none';
-                document.getElementById('errorDetails').textContent = error.message || 'Failed to connect to the server.';
-                document.getElementById('supportForm').style.display = 'none';
-                document.getElementById('errorMessage').style.display = 'block';
-            }
-        });
+            return isValid;
+        }
         
         // New request button
         document.getElementById('newRequestButton').addEventListener('click', function() {
