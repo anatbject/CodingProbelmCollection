@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Support Portal</title>
+    <title>Code Debugging Support - Expert Help for Your Projects</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
@@ -17,6 +17,8 @@
             --success: #10b981;
             --error: #ef4444;
             --border: #e5e7eb;
+            --accent: #7c3aed;
+            --price: #f59e0b;
         }
 
         * {
@@ -62,7 +64,18 @@
             font-size: 1.1rem;
             color: var(--text-light);
             max-width: 550px;
-            margin: 0 auto;
+            margin: 0 auto 20px;
+        }
+
+        .price-tag {
+            display: inline-block;
+            background-color: var(--price);
+            color: white;
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 1.1rem;
+            margin-top: 10px;
         }
 
         .main-content {
@@ -129,6 +142,31 @@
             font-weight: 600;
             margin-bottom: 25px;
             color: var(--text);
+        }
+
+        .form-pricing {
+            background-color: #fffbeb;
+            border: 1px solid #fef3c7;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .form-pricing i {
+            color: var(--price);
+            font-size: 24px;
+        }
+
+        .form-pricing-text {
+            color: #92400e;
+            font-size: 0.95rem;
+        }
+
+        .form-pricing-text strong {
+            font-weight: 600;
         }
 
         .form-group {
@@ -401,35 +439,45 @@
 <body>
     <div class="container">
         <header>
-            <h1>AI Support Portal</h1>
-            <p class="subtitle">Experienced an issue or have a question? Our AI team is ready to help you solve any problem.</p>
+            <h1>Can't Run Your Project? We'll Help You Debug</h1>
+            <p class="subtitle">Expert software engineers ready to solve your coding issues and get your project running smoothly.</p>
+            <div class="price-tag">
+                <i class="fas fa-tag"></i> Real-time debugging support starting at $5 per question
+            </div>
         </header>
         
         <div class="main-content">
             <button class="help-button" id="helpButton">
-                <i class="fas fa-robot"></i>
-                <span>Request Support</span>
+                <i class="fas fa-code"></i>
+                <span>Get Debugging Help</span>
             </button>
             
             <div class="form-container" id="formContainer">
-                <h2 class="form-title">Submit Your Question</h2>
+                <h2 class="form-title">Submit Your Coding Problem</h2>
                 
-                <form id="supportForm">
+                <div class="form-pricing">
+                    <i class="fas fa-info-circle"></i>
+                    <div class="form-pricing-text">
+                        <strong>$5 per question</strong> - Get help from experienced software engineers. You'll receive a confirmation email after submission.
+                    </div>
+                </div>
+                
+                <form id="validationForm">
                     <div class="form-group">
                         <label class="form-label" for="name">Name</label>
-                        <input type="text" class="form-control" id="name" name="name" placeholder="Enter your name" required>
+                        <input type="text" class="form-control" id="name" placeholder="Enter your name" required>
                         <div class="error-text" id="nameError">Please enter your name</div>
                     </div>
                     
                     <div class="form-group">
                         <label class="form-label" for="email">Email Address</label>
-                        <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>
+                        <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
                         <div class="error-text" id="emailError">Please enter a valid email address</div>
                     </div>
                     
                     <div class="form-group">
                         <label class="form-label" for="description">Problem Description</label>
-                        <textarea class="form-control" id="description" name="description" placeholder="Please describe your issue in detail" required></textarea>
+                        <textarea class="form-control" id="description" placeholder="Please describe your issue in detail. Include relevant code snippets, error messages, and what you've tried so far." required></textarea>
                         <div class="error-text" id="descriptionError">Please describe your issue</div>
                     </div>
                     
@@ -445,7 +493,7 @@
                         </div>
                     </div>
                     
-                    <button type="submit" class="submit-button">Submit Request</button>
+                    <button type="submit" class="submit-button">Submit Problem ($5)</button>
                     
                     <div class="loading" id="loadingIndicator">
                         <div class="spinner"></div>
@@ -453,11 +501,14 @@
                     </div>
                 </form>
                 
+                <!-- Hidden iframe to handle form submission response -->
+                <iframe name="hidden-frame" class="hidden-frame" id="hidden-frame" onload="handleFrameLoad()"></iframe>
+                
                 <div class="success-message" id="successMessage">
                     <i class="fas fa-check-circle"></i>
-                    <h3>Request Submitted Successfully!</h3>
-                    <p>We've received your request and will get back to you soon.</p>
-                    <button class="new-request-button" id="newRequestButton">Submit Another Request</button>
+                    <h3>Problem Submitted Successfully!</h3>
+                    <p>We've received your debugging request and a software engineer will analyze your issue shortly. Check your email for confirmation.</p>
+                    <button class="new-request-button" id="newRequestButton">Submit Another Problem</button>
                 </div>
                 
                 <div class="error-message" id="errorMessage">
@@ -474,39 +525,49 @@
                         <i class="fas fa-bolt"></i>
                     </div>
                     <h3>Fast Response</h3>
-                    <p>Get automated confirmation immediately and expert human review within 24 hours.</p>
+                    <p>Get expert help quickly with most issues resolved within 24 hours of submission.</p>
                 </div>
                 
                 <div class="feature">
                     <div class="feature-icon">
-                        <i class="fas fa-shield-alt"></i>
+                        <i class="fas fa-code"></i>
                     </div>
-                    <h3>Secure Process</h3>
-                    <p>Your data is encrypted and handled according to our privacy standards.</p>
+                    <h3>Professional Engineers</h3>
+                    <p>Our team consists of experienced software engineers who solve problems daily.</p>
                 </div>
                 
                 <div class="feature">
                     <div class="feature-icon">
-                        <i class="fas fa-cogs"></i>
+                        <i class="fas fa-money-bill-wave"></i>
                     </div>
-                    <h3>Smart Solutions</h3>
-                    <p>Our AI-powered system helps identify and resolve issues efficiently.</p>
+                    <h3>Affordable Pricing</h3>
+                    <p>Starting at just $5 per question with no subscription or hidden fees.</p>
                 </div>
             </div>
             
             <p class="privacy-note">
-                By submitting a request, you agree to our data handling practices. We only use your information to address your support needs.
+                By submitting a request, you agree to our terms of service. We only use your information to resolve your technical issues.
             </p>
         </div>
         
         <footer>
-            <p>© 2025 AI Support Portal | Powered by Advanced AI</p>
+            <p>© 2025 Code Debugging Support | Professional Software Engineering Help</p>
         </footer>
     </div>
 
     <script>
-        // 替换为您的Google Apps Script Web App URL
+        // 替换为您的Google Script URL
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwUZus-HWQ5HYQrvgktkwRZdmA3ZQiRi0ax6lbA6CzX0d2nhTwOx1gyrptb-xB5YHrn/exec';
+        
+        // 需要设置的Google Form字段ID
+        const nameFieldId = 'entry.123456789';  // 替换为实际的entry ID
+        const emailFieldId = 'entry.234567890'; // 替换为实际的entry ID
+        const descriptionFieldId = 'entry.345678901'; // 替换为实际的entry ID
+        
+        // 文件上传备用方案: Google Form可能不支持通过JavaScript上传文件
+        // 此变量决定是否使用隐藏的iframe方式提交
+        const useIframeSubmission = true;
+        let formSubmitted = false;
         
         // Show form when button clicked
         document.getElementById('helpButton').addEventListener('click', function() {
@@ -524,80 +585,16 @@
             document.getElementById('fileName').textContent = fileName;
         });
         
-        // Form submission
-        document.getElementById('supportForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Validate form
-            if (!validateForm()) {
-                return;
-            }
-            
-            // Show loading indicator
-            document.getElementById('loadingIndicator').style.display = 'block';
-            
-            // Get form data
-            const name = document.getElementById('name').value.trim();
-            const email = document.getElementById('email').value.trim();
-            const description = document.getElementById('description').value.trim();
-            
-            // Create form data object
-            const formData = new FormData();
-            formData.append('name', name);
-            formData.append('email', email);
-            formData.append('description', description);
-            
-            // Use the traditional form submission method which is not affected by CORS
-            const form = document.createElement('form');
-            form.method = 'POST';
-            form.action = SCRIPT_URL;
-            form.style.display = 'none';
-            
-            // Add inputs to the form
-            const nameInput = document.createElement('input');
-            nameInput.name = 'name';
-            nameInput.value = name;
-            form.appendChild(nameInput);
-            
-            const emailInput = document.createElement('input');
-            emailInput.name = 'email';
-            emailInput.value = email;
-            form.appendChild(emailInput);
-            
-            const descriptionInput = document.createElement('input');
-            descriptionInput.name = 'description';
-            descriptionInput.value = description;
-            form.appendChild(descriptionInput);
-            
-            // Create a hidden iframe
-            const iframe = document.createElement('iframe');
-            iframe.name = 'hidden_iframe';
-            iframe.style.display = 'none';
-            document.body.appendChild(iframe);
-            
-            // Set form target to the iframe
-            form.target = 'hidden_iframe';
-            
-            // Add form to the document
-            document.body.appendChild(form);
-            
-            // Listen for iframe load
-            iframe.onload = function() {
-                // Hide loading indicator
+        // Handle iframe load event - for success message
+        function handleFrameLoad() {
+            // Only react if a form was actually submitted
+            if (formSubmitted) {
                 document.getElementById('loadingIndicator').style.display = 'none';
-                // Show success message
-                document.getElementById('supportForm').style.display = 'none';
+                document.getElementById('validationForm').style.display = 'none';
                 document.getElementById('successMessage').style.display = 'block';
-            };
-            
-            // Submit the form
-            form.submit();
-            
-            // Clean up
-            setTimeout(function() {
-                document.body.removeChild(form);
-            }, 1000);
-        });
+                formSubmitted = false;
+            }
+        }
         
         // Validate form
         function validateForm() {
@@ -635,22 +632,98 @@
             return isValid;
         }
         
+        // Form submission
+        document.getElementById('validationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Validate the form first
+            if (!validateForm()) {
+                return;
+            }
+            
+            // Show loading indicator
+            document.getElementById('loadingIndicator').style.display = 'block';
+            
+            // Get form data
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const description = document.getElementById('description').value.trim();
+            const screenshotInput = document.getElementById('screenshot');
+            
+            // Create a hidden form for actual submission
+            const submissionForm = document.createElement('form');
+            submissionForm.method = 'POST';
+            submissionForm.action = SCRIPT_URL;
+            
+            if (useIframeSubmission) {
+                // Using iframe to avoid page reload
+                submissionForm.target = 'hidden-frame';
+                formSubmitted = true;
+            }
+            
+            // Add form fields
+            // Name field
+            const nameField = document.createElement('input');
+            nameField.type = 'text';
+            nameField.name = nameFieldId;
+            nameField.value = name;
+            submissionForm.appendChild(nameField);
+            
+            // Email field
+            const emailField = document.createElement('input');
+            emailField.type = 'text';
+            emailField.name = emailFieldId;
+            emailField.value = email;
+            submissionForm.appendChild(emailField);
+            
+            // Description field
+            const descriptionField = document.createElement('input');
+            descriptionField.type = 'text';
+            descriptionField.name = descriptionFieldId;
+            descriptionField.value = description;
+            submissionForm.appendChild(descriptionField);
+            
+            // Note: File uploads not supported with this method
+            // If screenshot needed, you would need a different approach
+            
+            // Append form to body, submit, then remove
+            submissionForm.style.display = 'none';
+            document.body.appendChild(submissionForm);
+            
+            submissionForm.submit();
+            
+            // If not using iframe, show success immediately 
+            // (Google Form normally redirects which would navigate away from this page)
+            if (!useIframeSubmission) {
+                setTimeout(function() {
+                    document.getElementById('loadingIndicator').style.display = 'none';
+                    document.getElementById('validationForm').style.display = 'none';
+                    document.getElementById('successMessage').style.display = 'block';
+                }, 1500);
+            }
+            
+            // Clean up the form
+            setTimeout(function() {
+                document.body.removeChild(submissionForm);
+            }, 1000);
+        });
+        
         // New request button
         document.getElementById('newRequestButton').addEventListener('click', function() {
             // Reset the form
-            document.getElementById('supportForm').reset();
+            document.getElementById('validationForm').reset();
             document.getElementById('fileName').textContent = 'No file selected';
             
             // Hide success message and show form again
             document.getElementById('successMessage').style.display = 'none';
-            document.getElementById('supportForm').style.display = 'block';
+            document.getElementById('validationForm').style.display = 'block';
         });
         
         // Try again button
         document.getElementById('tryAgainButton').addEventListener('click', function() {
             // Hide error message and show form again
             document.getElementById('errorMessage').style.display = 'none';
-            document.getElementById('supportForm').style.display = 'block';
+            document.getElementById('validationForm').style.display = 'block';
         });
     </script>
 </body>
