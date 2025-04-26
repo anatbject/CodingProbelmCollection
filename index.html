@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Support Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1e40af;
+            --background: #f9fafb;
+            --surface: #ffffff;
+            --text: #1f2937;
+            --text-light: #6b7280;
+            --success: #10b981;
+            --border: #e5e7eb;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+
+        body {
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+            font-weight: 400;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            background: linear-gradient(90deg, #2563eb, #7c3aed);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            max-width: 550px;
+            margin: 0 auto;
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .help-button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 18px 36px;
+            font-size: 18px;
+            font-weight: 600;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 14px rgba(37, 99, 235, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .help-button i {
+            font-size: 20px;
+        }
+
+        .help-button:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.3);
+        }
+
+        .help-button:active {
+            transform: translateY(1px);
+        }
+
+        .form-container {
+            background-color: var(--surface);
+            border-radius: 16px;
+            width: 100%;
+            max-width: 800px;
+            padding: 30px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            margin-top: 40px;
+            display: none;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .form-container.visible {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .form-iframe {
+            width: 100%;
+            height: 600px;
+            border: none;
+        }
+
+        .features {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 80px;
+            flex-wrap: wrap;
+        }
+
+        .feature {
+            background-color: var(--surface);
+            border-radius: 16px;
+            padding: 30px;
+            width: 300px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .feature:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        .feature-icon {
+            background-color: rgba(37, 99, 235, 0.1);
+            color: var(--primary);
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 28px;
+        }
+
+        .feature h3 {
+            font-size: 20px;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .feature p {
+            color: var(--text-light);
+            font-size: 15px;
+        }
+
+        footer {
+            text-align: center;
+            color: var(--text-light);
+            font-size: 14px;
+            margin-top: 60px;
+        }
+
+        .privacy-note {
+            max-width: 600px;
+            margin: 20px auto 0;
+            font-size: 13px;
+            color: var(--text-light);
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 16px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .features {
+                gap: 20px;
+            }
+            
+            .feature {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>AI Support Portal</h1>
+            <p class="subtitle">Experienced an issue or have a question? Our AI team is ready to help you solve any problem.</p>
+        </header>
+        
+        <div class="main-content">
+            <button class="help-button" id="helpButton">
+                <i class="fas fa-robot"></i>
+                <span>Request Support</span>
+            </button>
+            
+            <div class="form-container" id="formContainer">
+                <!-- Replace with your Google Form embed URL -->
+                <iframe class="form-iframe" src="https://docs.google.com/forms/d/e/1FAIpQLSdXcxWZCNLVkXxIbilhsA6Cw9Gjq6Pni6mbBF6SJBvZ5j4Mbw/viewform?usp=header"></iframe>
+            </div>
+            
+            <div class="features">
+                <div class="feature">
+                    <div class="feature-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3>Fast Response</h3>
+                    <p>Get automated confirmation immediately and expert human review within 24 hours.</p>
+                </div>
+                
+                <div class="feature">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Secure Process</h3>
+                    <p>Your data is encrypted and handled according to our privacy standards.</p>
+                </div>
+                
+                <div class="feature">
+                    <div class="feature-icon">
+                        <i class="fas fa-cogs"></i>
+                    </div>
+                    <h3>Smart Solutions</h3>
+                    <p>Our AI-powered system helps identify and resolve issues efficiently.</p>
+                </div>
+            </div>
+            
+            <p class="privacy-note">
+                By submitting a request, you agree to our data handling practices. We only use your information to address your support needs.
+            </p>
+        </div>
+        
+        <footer>
+            <p>© 2025 AI Support Portal | Powered by Advanced AI</p>
+        </footer>
+    </div>
+
+    <script>
+        document.getElementById('helpButton').addEventListener('click', function() {
+            const formContainer = document.getElementById('formContainer');
+            formContainer.classList.add('visible');
+            this.style.display = 'none';
+            
+            // Scroll to the form container with smooth animation
+            formContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        });
+    </script>
+</body>
+</html>
