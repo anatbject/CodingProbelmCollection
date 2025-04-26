@@ -9,11 +9,13 @@
         :root {
             --primary: #2563eb;
             --primary-dark: #1e40af;
+            --primary-light: #dbeafe;
             --background: #f9fafb;
             --surface: #ffffff;
             --text: #1f2937;
             --text-light: #6b7280;
             --success: #10b981;
+            --error: #ef4444;
             --border: #e5e7eb;
         }
 
@@ -101,12 +103,13 @@
             transform: translateY(1px);
         }
 
+        /* Custom Form Styles */
         .form-container {
             background-color: var(--surface);
             border-radius: 16px;
             width: 100%;
-            max-width: 800px;
-            padding: 30px;
+            max-width: 600px;
+            padding: 35px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
             margin-top: 40px;
             display: none;
@@ -121,12 +124,164 @@
             transform: translateY(0);
         }
 
-        .form-iframe {
-            width: 100%;
-            height: 600px;
-            border: none;
+        .form-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 25px;
+            color: var(--text);
         }
 
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+            background-color: var(--surface);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-light);
+        }
+
+        textarea.form-control {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .form-file-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .file-upload-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background-color: var(--background);
+            color: var(--text);
+            border: 1px dashed var(--border);
+            padding: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+
+        .file-upload-button:hover {
+            border-color: var(--primary);
+            background-color: var(--primary-light);
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .file-name {
+            margin-top: 8px;
+            font-size: 14px;
+            color: var(--text-light);
+        }
+
+        .submit-button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 14px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .submit-button:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .error-text {
+            color: var(--error);
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .success-message {
+            background-color: #ecfdf5;
+            border: 1px solid #10b981;
+            color: #065f46;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .success-message i {
+            font-size: 40px;
+            margin-bottom: 15px;
+            color: #10b981;
+        }
+
+        .success-message h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        .success-message p {
+            color: #065f46;
+            margin-bottom: 15px;
+        }
+
+        .new-request-button {
+            background-color: #10b981;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .new-request-button:hover {
+            background-color: #059669;
+        }
+
+        .error-message {
+            background-color: #fee2e2;
+            border: 1px solid #ef4444;
+            color: #991b1b;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .error-message i {
+            font-size: 40px;
+            margin-bottom: 15px;
+            color: #ef4444;
+        }
+
+        /* Features */
         .features {
             display: flex;
             justify-content: center;
@@ -189,6 +344,27 @@
             text-align: center;
         }
 
+        .loading {
+            display: none;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(37, 99, 235, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
         @media (max-width: 768px) {
             .container {
                 padding: 30px 16px;
@@ -196,6 +372,10 @@
             
             h1 {
                 font-size: 2rem;
+            }
+            
+            .form-container {
+                padding: 25px;
             }
             
             .features {
@@ -223,8 +403,59 @@
             </button>
             
             <div class="form-container" id="formContainer">
-                <!-- Replace with your Google Form embed URL -->
-                <iframe class="form-iframe" src="https://docs.google.com/forms/d/e/1FAIpQLSdXcxWZCNLVkXxIbilhsA6Cw9Gjq6Pni6mbBF6SJBvZ5j4Mbw/viewform?embedded=true"></iframe>
+                <h2 class="form-title">Submit Your Question</h2>
+                <form id="supportForm">
+                    <div class="form-group">
+                        <label class="form-label" for="name">Name</label>
+                        <input type="text" class="form-control" id="name" placeholder="Enter your name" required>
+                        <div class="error-text" id="nameError">Please enter your name</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="email">Email Address</label>
+                        <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
+                        <div class="error-text" id="emailError">Please enter a valid email address</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="description">Problem Description</label>
+                        <textarea class="form-control" id="description" placeholder="Please describe your issue in detail" required></textarea>
+                        <div class="error-text" id="descriptionError">Please describe your issue</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Screenshot (Optional)</label>
+                        <div class="form-file-group">
+                            <label class="file-upload-button" for="screenshot">
+                                <i class="fas fa-upload"></i>
+                                <span>Select a file</span>
+                            </label>
+                            <input type="file" class="file-input" id="screenshot" accept="image/*">
+                            <div class="file-name" id="fileName">No file selected</div>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="submit-button">Submit Request</button>
+                    
+                    <div class="loading" id="loadingIndicator">
+                        <div class="spinner"></div>
+                        <span>Submitting your request...</span>
+                    </div>
+                </form>
+                
+                <div class="success-message" id="successMessage">
+                    <i class="fas fa-check-circle"></i>
+                    <h3>Request Submitted Successfully!</h3>
+                    <p>We've received your request and will get back to you soon.</p>
+                    <button class="new-request-button" id="newRequestButton">Submit Another Request</button>
+                </div>
+                
+                <div class="error-message" id="errorMessage">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <h3>Something went wrong</h3>
+                    <p id="errorDetails">There was an error submitting your request. Please try again.</p>
+                    <button class="new-request-button" id="tryAgainButton">Try Again</button>
+                </div>
             </div>
             
             <div class="features">
@@ -264,6 +495,10 @@
     </div>
 
     <script>
+        // 替换为您的Google Apps Script Web App URL
+        const SCRIPT_URL = 'YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL';
+        
+        // Show form when button clicked
         document.getElementById('helpButton').addEventListener('click', function() {
             const formContainer = document.getElementById('formContainer');
             formContainer.classList.add('visible');
@@ -271,6 +506,128 @@
             
             // Scroll to the form container with smooth animation
             formContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        });
+        
+        // File upload handling
+        document.getElementById('screenshot').addEventListener('change', function() {
+            const fileName = this.files[0] ? this.files[0].name : 'No file selected';
+            document.getElementById('fileName').textContent = fileName;
+        });
+        
+        // Form submission
+        document.getElementById('supportForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Basic form validation
+            let isValid = true;
+            
+            const name = document.getElementById('name');
+            const email = document.getElementById('email');
+            const description = document.getElementById('description');
+            const screenshot = document.getElementById('screenshot');
+            
+            // Name validation
+            if (!name.value.trim()) {
+                document.getElementById('nameError').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('nameError').style.display = 'none';
+            }
+            
+            // Email validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!email.value.trim() || !emailRegex.test(email.value.trim())) {
+                document.getElementById('emailError').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('emailError').style.display = 'none';
+            }
+            
+            // Description validation
+            if (!description.value.trim()) {
+                document.getElementById('descriptionError').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('descriptionError').style.display = 'none';
+            }
+            
+            if (!isValid) {
+                return;
+            }
+            
+            // Show loading indicator
+            document.getElementById('loadingIndicator').style.display = 'block';
+            
+            try {
+                // Handle file upload if present
+                let fileUrl = "";
+                if (screenshot.files.length > 0) {
+                    // 注意：真实场景中，您需要先将文件上传到某处（如 Google Drive）
+                    // 这里我们只是模拟，实际项目需要使用文件上传服务
+                    // fileUrl = await uploadFile(screenshot.files[0]);
+                    
+                    // 简单示例中，我们直接使用一个占位符
+                    fileUrl = "Screenshot was uploaded but URL placeholder is used";
+                }
+                
+                // Prepare data for submission
+                const formData = {
+                    name: name.value.trim(),
+                    email: email.value.trim(),
+                    description: description.value.trim(),
+                    fileUrl: fileUrl
+                };
+                
+                // Submit data to Google Apps Script
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+                
+                const result = await response.json();
+                
+                // Hide loading indicator
+                document.getElementById('loadingIndicator').style.display = 'none';
+                
+                if (result.result === 'success') {
+                    // Show success message
+                    document.getElementById('supportForm').style.display = 'none';
+                    document.getElementById('successMessage').style.display = 'block';
+                } else {
+                    // Show error message
+                    document.getElementById('errorDetails').textContent = result.message || 'An unknown error occurred.';
+                    document.getElementById('supportForm').style.display = 'none';
+                    document.getElementById('errorMessage').style.display = 'block';
+                }
+                
+            } catch (error) {
+                // Hide loading indicator and show error message
+                document.getElementById('loadingIndicator').style.display = 'none';
+                document.getElementById('errorDetails').textContent = error.message || 'Failed to connect to the server.';
+                document.getElementById('supportForm').style.display = 'none';
+                document.getElementById('errorMessage').style.display = 'block';
+            }
+        });
+        
+        // New request button
+        document.getElementById('newRequestButton').addEventListener('click', function() {
+            // Reset the form
+            document.getElementById('supportForm').reset();
+            document.getElementById('fileName').textContent = 'No file selected';
+            
+            // Hide success message and show form again
+            document.getElementById('successMessage').style.display = 'none';
+            document.getElementById('supportForm').style.display = 'block';
+        });
+        
+        // Try again button
+        document.getElementById('tryAgainButton').addEventListener('click', function() {
+            // Hide error message and show form again
+            document.getElementById('errorMessage').style.display = 'none';
+            document.getElementById('supportForm').style.display = 'block';
         });
     </script>
 </body>
